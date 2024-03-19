@@ -1,18 +1,21 @@
 import numpy as np
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
 
-# Define input data
-X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+# Load dataset
+data = load_breast_cancer()
+X_train, X_test, y_train, y_test = train_test_split(data.data, data.target, test_size=0.2, random_state=42)
 
-# Define weights and biases
-W = np.array([[1, 1], [1, 1]])
-b = np.array([0, 0])
+# Train logistic regression model
+model = LogisticRegression()
+model.fit(X_train, y_train)
 
-# Calculate net input
-net_input = np.dot(X, W) + b
+# Predictions
+y_pred = model.predict(X_test)
 
-# ReLU activation function
-output = np.maximum(0, net_input)
-
-print("Output:")
-print(output)
-
+# Calculate confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:")
+print(cm)
